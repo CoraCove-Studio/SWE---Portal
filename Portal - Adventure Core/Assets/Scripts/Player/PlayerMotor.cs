@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class PlayerMotor : MonoBehaviour
 
         controller.Move(playerVelocity * Time.deltaTime);
 
-        Debug.Log("How much force is being applied down onto the character: " + playerVelocity.y);
+        // Debug.Log("How much force is being applied down onto the character: " + playerVelocity.y);
     }
 
     public void Jump()
@@ -59,5 +60,12 @@ public class PlayerMotor : MonoBehaviour
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -jumpHeight * gravity);
         }
+    }
+
+    public void TeleportPlayer(Vector3 newPos)
+    {
+        controller.enabled = false;
+        transform.position = newPos;
+        controller.enabled = true;
     }
 }
