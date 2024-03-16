@@ -34,7 +34,7 @@ public class PlayerMotor : MonoBehaviour
     {
         Vector3 moveDirection = Vector3.zero;
         moveDirection.x = input.x;
-        moveDirection.y = input.y;
+        moveDirection.z = input.y;
 
         //something here might need to change the equation to 
         //(transform.TransformDirection(moveDirection) * speed) * Time.deltaTime
