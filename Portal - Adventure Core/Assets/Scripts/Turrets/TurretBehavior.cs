@@ -53,7 +53,20 @@ public class TurretBehavior : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Vector3 direction = (playerObject.transform.position - transform.position).normalized;
+        Vector3 direction = (playerObject.transform.position - transform.position).normalized * 10;
         Gizmos.DrawRay(transform.position, direction);
+    }
+
+    public void ActivateFiringIndicators()
+    {
+        //turn light on
+    }
+
+    public IEnumerator ActivateFireDelay()
+    {
+        //ActivateFiringIndicators()
+        //Wait for seconds
+        //ShootAtPlayer()
+        return null;
     }
 }
