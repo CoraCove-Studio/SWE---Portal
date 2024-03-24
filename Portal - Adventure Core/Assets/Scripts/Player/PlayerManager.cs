@@ -10,20 +10,28 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int playerHealth = 100;
+    
+    public void TakeDamage(int damage)
     {
-        
+        playerHealth -= damage;
+        print(playerHealth);
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        //turret trigger here
-        //incls visual indicator
+        //if player enter's a turret's range, starts the firing coroutine
+        if (other.CompareTag(TagManager.TURRET))
+        {
+            other.gameObject.GetComponent<TurretBehavior>().ActivateFiring();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //turn turret off
+        //if player exits a turret's range, stops the firing coroutine
+        if (other.CompareTag(TagManager.TURRET))
+        {
+            other.gameObject.GetComponent<TurretBehavior>().DeactivateFiring();
+        }
     }
 }

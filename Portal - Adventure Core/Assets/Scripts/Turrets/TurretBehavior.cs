@@ -11,12 +11,14 @@ using UnityEngine;
 public class TurretBehavior : MonoBehaviour
 {
     [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject spotlight;
 
-    //this is here for testing purposes NOT final location
+    [Header("Outside Scripts")]
+    [SerializeField] private PlayerManager playerManager;
+
     private void FixedUpdate()
     {
         LookAtPlayer();
-        ShootAtPlayer(); 
     }
 
     private void LookAtPlayer()
@@ -24,7 +26,7 @@ public class TurretBehavior : MonoBehaviour
         transform.LookAt(playerObject.transform.position);
     }
     //public so it can be accessed by the player manager
-    public void ShootAtPlayer()
+    private void ShootAtPlayer()
     {
         Vector3 rayStart = transform.position;
         Vector3 rayDirection = (playerObject.transform.position - transform.position).normalized;
@@ -37,7 +39,7 @@ public class TurretBehavior : MonoBehaviour
             if (hitInfo.collider.CompareTag(TagManager.PLAYER))
             {
                 print("hit player");
-                //call player TakeDamage()
+                playerManager.TakeDamage(1);
             }
             else
             {
@@ -50,6 +52,7 @@ public class TurretBehavior : MonoBehaviour
         }
     }
 
+    //draws a gizmo the length of the raycast to help visualize for level design
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -57,16 +60,22 @@ public class TurretBehavior : MonoBehaviour
         Gizmos.DrawRay(transform.position, direction);
     }
 
-    public void ActivateFiringIndicators()
+    public void ActivateFiring()
     {
         //turn light on
+        spotlight.SetActive(true);
+        //audio cue goes here
+
+        //begin firing
+        InvokeRepeating("ShootAtPlayer", 0.5f, 0.5f);
     }
 
-    public IEnumerator ActivateFireDelay()
+    public void DeactivateFiring()
     {
-        //ActivateFiringIndicators()
-        //Wait for seconds
-        //ShootAtPlayer()
-        return null;
+        //turn light off
+        spotlight.SetActive(false);
+        //turn audio cue off? if repeating. otherwise ignore.
+        //end firing
+        CancelInvoke("ShootAtPlayer");
     }
 }
